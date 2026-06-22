@@ -6,6 +6,67 @@
     <title>To Do List</title>
 <script defer src="bundle.js"></script></head>
 <body>
-    <h1>to do</h1>
+    <div id="container">
+        <div id="top-bar">
+            <h1>To Do</h1>
+        </div>
+
+        <div id="main-content-container">
+            <div id="left-bar">
+                <div id="left-bar-container">
+                    <button id="all-tasks">All Tasks</button>
+                    <button id="completed-tasks">Completed Tasks</button>
+                </div>
+                <div id="projects-bar">
+                    <h1>Projects</h1>
+                    <h2>General</h2>
+                    <button id="add-new-project">Add New Project</button>
+                </div>
+            </div>
+            <div id="body-container">
+                <h1>Project Title</h1>
+                <h2>Tasks</h2>
+            </div>
+        </div>
+
+        <div id="new-project-modal" class="hidden">
+            <div class="modal-content">
+            <form id="new-project-form">
+                <h2>New Project</h2>
+                <label for="project-name">Project Name:</label>
+                <input type="text" id="project-name" required> <input type="submit" value="Create Project">
+            </form>
+        <button id="close-project-modal-btn">Cancel</button>
+    </div>
+</div>
+
+        <div id="todo-modal" class="hidden">
+            <div class="modal-content">
+                <form id="new-task-form">
+                    <h2>New Task</h2>
+                    
+                    <label for="task-name">Task Name:</label>
+                    <input type="text" id="task-name" required>
+                    
+                    <label for="task-description">Description:</label>
+                    <textarea id="task-description"></textarea> <label for="due-date">Due Date:</label>
+                    <input type="date" id="due-date" required> <label for="task-priority">Priority:</label>
+                    <select id="task-priority"> <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                    
+                    <label for="task-project">Project:</label>
+                    <select id="task-project">
+                        </select>
+                    
+                    <input type="submit" value="Submit">
+                </form>
+                
+                <button id="close-modal-btn">Cancel</button>
+            </div>
+        </div>
+        
+    </div>
 </body>
 </html>

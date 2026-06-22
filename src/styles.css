@@ -1,3 +1,122 @@
 * {
-    background-color: gray;
+    background-color: rgb(92, 143, 179);
+    margin:0;
+    padding: 0;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid plum;
+    height: 100vh;
+    flex-wrap: nowrap;
+}
+
+
+#top-bar {
+    font-size: 38px;
+    border: 2px solid green;
+}
+
+#main-content-container {
+    display: flex;
+    flex-direction: row; 
+    flex-grow: 1;        
+}
+
+#left-bar {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid black;
+    width: 400px;
+}
+
+#left-bar-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid darkorange;
+
+}
+
+#projects-bar {
+    flex-grow: 1;
+    border: 2px solid rgb(84, 6, 6);
+    display: flex;
+    flex-direction: column;
+}
+
+#body-container {
+    border: 2px solid skyblue;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    font-size: 20;
+    
+}
+
+#all-tasks {
+    font-size: 36px;
+}
+
+#completed-tasks {
+    font-size: 36px;
+}
+
+#new-task-button {
+    font-size: 36px;
+}
+
+#add-new-project {
+    font-size: 36px;
+}
+
+
+/* 1. The Backdrop: Covers the entire screen and darkens the background */
+#todo-modal , #new-project-modal {
+    position: fixed;         /* Pulls it out of normal flow, locks it to the screen */
+    top: 0;
+    left: 0;
+    width: 100vw;            /* 100% of viewport width */
+    height: 100vh;           /* 100% of viewport height */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black backdrop */
+    
+    /* Flexbox centers the actual box inside this backdrop */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    z-index: 9999;           /* Guarantees it sits ON TOP of all other elements */
+}
+
+/* The Actual Box: The window in the middle holding the form */
+.modal-content {
+    background-color: white; /* Give it a clean color so it stands out from the gray background */
+    padding: 30px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;          /* Responsive on mobile screens */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    
+    /* Flexbox to organize your form inputs inside the box vertically */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; 
+}
+
+/*The Utility Class: Keeps it hidden until JS removes this class */
+.hidden {
+    display: none !important;
+}
+
+#new-task-form {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid salmon;
+}
+
+
+#complete-btn {
+    color: palevioletred;
 }
