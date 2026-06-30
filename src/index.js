@@ -108,5 +108,22 @@ showCompletedTasks.addEventListener('click', () => {
     renderCompletedTasks(projectsMasterList);
 });
 
+//close buttons
+const closeTaskModalBtn = document.querySelector('#todo-modal .close-modal-btn');
+const todoModal = document.getElementById('todo-modal');
+
+closeTaskModalBtn.addEventListener('click', () => {
+    todoModal.classList.add('hidden'); 
+});
+
+
+
+const closeProjectModalBtn = document.querySelector('#new-project-modal .close-modal-btn');
+const newProjectModal = document.getElementById('new-project-modal');
+
+closeProjectModalBtn.addEventListener('click', () => {
+    newProjectModal.classList.add('hidden'); 
+});
+
 
 renderProjectsSidebar(projectsMasterList);

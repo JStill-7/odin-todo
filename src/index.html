@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <title>To Do List</title>
 </head>
 <body>
@@ -19,7 +22,7 @@
                     <button id="new-task-button">New Task</button>
                 </div>
         <div id="projects-bar">
-            <h1>Projects</h1>
+            <h1 id="project-header">Projects</h1>
             <div id="projects-list"></div>
             <button id="add-new-project">Add New Project</button>
         </div>
@@ -37,7 +40,7 @@
                 <label for="project-name">Project Name:</label>
                 <input type="text" id="project-name" required> <input type="submit" value="Create Project">
             </form>
-        <button id="close-project-modal-btn">Cancel</button>
+        <button class="close-modal-btn">Cancel</button>
     </div>
 </div>
 
@@ -58,10 +61,10 @@
                 <label for="task-project">Project:</label>
                 <select id="task-project" name="projectGroup"> </select>
                 
-                <input type="submit" value="Submit">
+                <input id="submit-btn" type="submit" value="Submit">
             </form>
                 
-                <button id="close-modal-btn">Cancel</button>
+                <button class="close-modal-btn">Cancel</button>
             </div>
         </div>
         

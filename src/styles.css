@@ -1,21 +1,55 @@
+:root {
+    /* 60% - Main Moody Background */
+    --bg-main: #1F1B1A;      /* Warm Obsidian */
+    --bg-sidebar: #171413;   /* Deep Dark Shadow */
+
+    /* 30% - Cards & Layout Elements */
+    --bg-card: #3A2E2B;      /* Roasted Espresso */
+    --text-main: #E6DFD4;    /* Warm Parchment */
+    --text-muted: #A69F95;   /* Dimmed Parchment */
+    --border-subtle: #2d2422; /* Dark separator lines */
+
+    /* 10% - Call to Action Accents */
+    --accent: #D4A373;        /* Honeyed Brass */
+    --accent-hover: #B88A5B;  /* Muted Brass */
+}
+
+/* --- GLOBAL RESET --- */
 * {
-    background-color: rgb(92, 143, 179);
-    margin:0;
+    box-sizing: border-box; /* Prevents padding from breaking widths */
+    margin: 0;
     padding: 0;
 }
 
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    /* 👇 CHOSEN OPTION: Lora for ultra-readable, elegant body text */
+    font-family: 'Lora', Georgia, serif; 
+}
+
+/* 👇 NEW: EB Garamond for all editorial headers and titles */
+h1, h2, h3, #top-bar, #projects-bar h1 {
+    font-family: 'EB Garamond', Garamond, serif;
+    font-weight: 600;
+    letter-spacing: 0.3px; /* Gives the elegant letters a breath of air */
+}
 #container {
     display: flex;
     flex-direction: column;
-    border: 2px solid plum;
     height: 100vh;
     flex-wrap: nowrap;
+    background-color: var(--bg-main);
 }
 
-
+/* --- TOP HEADER BAR --- */
 #top-bar {
-    font-size: 38px;
-    border: 2px solid green;
+    font-size: 32px;
+    font-weight: bold;
+    padding: 15px 25px;
+    background-color: var(--bg-sidebar);
+    color: var(--accent); /* Makes the main app title pop out in brass */
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 #main-content-container {
@@ -24,88 +58,225 @@
     flex-grow: 1;        
 }
 
+/* --- SIDEBAR CONTAINER --- */
 #left-bar {
     display: flex;
     flex-direction: column;
-    border: 2px solid black;
-    width: 400px;
+    width: 320px;
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border-subtle);
 }
 
 #left-bar-container {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    border: 2px solid darkorange;
-
+    padding: 20px 15px;
+    gap: 10px;
 }
 
 #projects-bar {
     flex-grow: 1;
-    border: 2px solid rgb(84, 6, 6);
     display: flex;
     flex-direction: column;
+    padding: 20px 15px;
+    border-top: 1px solid var(--border-subtle);
 }
 
-#body-container {
-    border: 2px solid skyblue;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-grow: 1;
-    font-size: 20;
-    
+#projects-bar h1 {
+    font-size: 20px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
 }
 
-#all-tasks {
-    font-size: 36px;
-}
-
-#completed-tasks {
-    font-size: 36px;
-}
-
-#new-task-button {
-    font-size: 36px;
-}
-
+/* --- SIDEBAR NAVIGATION BUTTONS --- */
+#left-bar-container button, 
+#projects-list button,
 #add-new-project {
-    font-size: 36px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 12px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+
+    font-family: 'Lora', Georgia, serif; 
+    font-weight: 500;
 }
 
+/* Master buttons size adjustment */
+#all-tasks, #completed-tasks, #new-task-button {
+    font-size: 20px !important;
+}
 
-/* 1. The Backdrop: Covers the entire screen and darkens the background */
-#todo-modal , #new-project-modal {
-    position: fixed;         /* Pulls it out of normal flow, locks it to the screen */
+/* Hover highlights for navigation links */
+#left-bar-container button:hover, 
+#projects-list button:hover {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+}
+
+/* Special styling for the main "Add" actions */
+#new-task-button, 
+#add-new-project {
+    color: var(--accent) !important;
+    border: 1px dashed var(--accent) !important;
+    margin-top: 10px;
+    text-align: center !important;
+}
+
+#new-task-button:hover, 
+#add-new-project:hover {
+    background-color: var(--accent) !important;
+    color: var(--bg-sidebar) !important;
+}
+
+/* --- MAIN WORKSPACE CONTAINER --- */
+#body-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+#body-container h1 {
+    font-size: 36px;
+    color: var(--text-main);
+    margin-bottom: 5px;
+}
+
+#body-container h2 {
+    font-size: 18px;
+    color: var(--text-muted);
+    margin-bottom: 25px;
+    font-weight: normal;
+}
+
+/* Project side bar list wrapper */
+#projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* --- DYNAMIC TASK CARDS (Added to match your JS outputs) --- */
+#tasks-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.todo-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.todo-main-info h3 {
+    color: var(--text-main);
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.todo-main-info p {
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.todo-sub-info {
+    font-size: 13px;
+    color: var(--accent);
+    opacity: 0.8;
+}
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+/* Small contextual action buttons on cards */
+.card-actions button {
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    transition: background 0.2s;
+}
+
+.card-actions .complete-btn:hover {
+    background-color: var(--accent);
+    color: var(--bg-sidebar);
+}
+
+.card-actions .delete-btn:hover {
+    background-color: #944a4a; /* Crimson warning color */
+    color: white;
+}
+
+/* --- POPUP MODALS --- */
+#todo-modal, #new-project-modal {
+    position: fixed;         
     top: 0;
     left: 0;
-    width: 100vw;            /* 100% of viewport width */
-    height: 100vh;           /* 100% of viewport height */
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black backdrop */
-    
-    /* Flexbox centers the actual box inside this backdrop */
+    width: 100vw;            
+    height: 100vh;           
+    background-color: rgba(0, 0, 0, 0.7); /* Deepened overlay for extra moodiness */
     display: flex;
     justify-content: center;
     align-items: center;
-    
-    z-index: 9999;           /* Guarantees it sits ON TOP of all other elements */
+    z-index: 9999;           
 }
 
-/* The Actual Box: The window in the middle holding the form */
 .modal-content {
-    background-color: white; /* Give it a clean color so it stands out from the gray background */
-    padding: 30px;
-    border-radius: 8px;
-    width: 400px;
-    max-width: 90%;          /* Responsive on mobile screens */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    
-    /* Flexbox to organize your form inputs inside the box vertically */
+    background-color: var(--bg-card); /* Now shifts into dark mode beautifully */
+    color: var(--text-main);
+    padding: 35px;
+    border-radius: 10px;
+    width: 450px;
+    max-width: 90%;          
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
     gap: 15px; 
+    border: 1px solid var(--border-subtle);
 }
 
-/*The Utility Class: Keeps it hidden until JS removes this class */
+/* Input styles so forms look natural in dark mode */
+.modal-content input, 
+.modal-content textarea, 
+.modal-content select {
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-main);
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.modal-content label {
+    font-size: 14px;
+    color: var(--accent);
+    margin-bottom: -10px;
+}
+
 .hidden {
     display: none !important;
 }
@@ -113,10 +284,47 @@
 #new-task-form {
     display: flex;
     flex-direction: column;
-    border: 2px solid salmon;
+    gap: 15px;
+}
+
+/* Big submission buttons */
+#submit-btn, .modal-content button[type="submit"] {
+    font-size: 18px;
+    padding: 12px;
+    background-color: var(--accent);
+    color: var(--bg-sidebar);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+#submit-btn:hover {
+    background-color: var(--accent-hover);
+
 }
 
 
-#complete-btn {
-    color: palevioletred;
+.close-modal-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+    font-family: 'Lora', Georgia, serif; /* Keeps typography cohesive */
+    margin-top: 5px;
+    padding: 5px;
+    transition: color 0.2s ease;
+    
+    /* 💡 THESE TWO LINES FIX THE "GIANT BLOCK" ISSUE: */
+    align-self: center;   /* Stops the button from stretching full-width */
+    width: max-content;   /* Shrinks the clickable area to just fit the word "Cancel" */
 }
+
+.close-modal-btn:hover {
+    color: var(--text-main);
+    text-decoration: underline; /* Subtle hint that it's a clickable link */
+}
+/* mobile view media querys  */

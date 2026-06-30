@@ -1,12 +1,12 @@
 //the project container where the form lives
 let projectForm = document.querySelector('#new-project-modal');
 //the cancel button that lives in the project form container
-let closeProjectBtn = document.getElementById('close-project-modal-btn');
+let closeProjectBtn = document.querySelector('.close-modal-btn');
 
 //the todo form
 let toDoForm = document.querySelector('#todo-modal');
 //close todo form
-let closeToDoForm = document.querySelector('#close-modal-btn');
+let closeToDoForm = document.querySelector('.close-modal-btn');
 
 //the add new project button
 let newProjectBtn = document.getElementById('add-new-project');
