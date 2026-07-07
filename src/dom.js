@@ -52,13 +52,14 @@ export function renderActiveProject(project) {
     const bodyContainer = document.getElementById('body-container');
     
     bodyContainer.innerHTML = `
-        <h1>${project.name}</h1>
+        <div class="project-header-area">
+            <h1>${project.name}</h1>
+            <button class="delete-project-btn" data-project="${project.name}">Delete Project</button>
+        </div>
         <div id="tasks-container"></div>
     `;
 
     const tasksContainer = document.getElementById('tasks-container');
-
-    // Filter out completed tasks so we only look at active ones
     const activeTodos = project.todos.filter(todo => todo.completed === false);
 
     if (activeTodos.length === 0) {
@@ -68,6 +69,7 @@ export function renderActiveProject(project) {
             const todoCard = document.createElement('div');
             todoCard.classList.add('todo-card');   
             
+            // 💡 ADDED: data-project and data-title attributes to the buttons below
             todoCard.innerHTML = `
                 <div class="todo-main-info">
                     <h3>${todo.title}</h3>
@@ -78,28 +80,11 @@ export function renderActiveProject(project) {
                     <span>Priority: ${todo.priority}</span>
                 </div>
                 <div class="card-actions">
-                    <button class="complete-btn">Complete Task</button>
-                    <button class="delete-btn">Delete Task</button>
+                    <button class="complete-btn" data-project="${project.name}" data-title="${todo.title}">Complete Task</button>
+                    <button class="delete-btn" data-project="${project.name}" data-title="${todo.title}">Delete Task</button>
                 </div>
             `;
-
-            // GRAB THE BUTTONS (Only once each!)
-            const completeBtn = todoCard.querySelector('.complete-btn');
-            const deleteBtn = todoCard.querySelector('.delete-btn');
-
-            // COMPLETE BUTTON LISTENER
-            completeBtn.addEventListener('click', () => {
-                todo.toggleComplete(); // Changes false to true
-                renderActiveProject(project); // Instantly re-draws screen
-            });
-
-            // DELETE BUTTON LISTENER
-            deleteBtn.addEventListener('click', () => {
-                // Remove the todo object from the project's internal array
-                project.todos = project.todos.filter(item => item !== todo);
-                renderActiveProject(project); // Instantly re-draws screen
-            });
-
+            
             tasksContainer.appendChild(todoCard);
         });
     }

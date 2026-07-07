@@ -281,14 +281,15 @@ h1, h2, h3, #top-bar, #projects-bar h1 {
     display: none !important;
 }
 
-#new-task-form {
+#new-task-form, #new-project-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    width: 100%;
 }
 
 /* Big submission buttons */
-#submit-btn, .modal-content button[type="submit"] {
+#submit-btn, #new-project-form .modal-content button[type="submit"] {
     font-size: 18px;
     padding: 12px;
     background-color: var(--accent);
@@ -300,8 +301,10 @@ h1, h2, h3, #top-bar, #projects-bar h1 {
     transition: background 0.2s;
 }
 
-#submit-btn:hover {
+#submit-btn:hover,
+#new-project-form input[type="submit"]:hover {
     background-color: var(--accent-hover);
+    cursor: pointer;
 
 }
 
@@ -327,4 +330,37 @@ h1, h2, h3, #top-bar, #projects-bar h1 {
     color: var(--text-main);
     text-decoration: underline; /* Subtle hint that it's a clickable link */
 }
+
+
+/* --- PROJECT HEADER AREA --- */
+.project-header-area {
+    display: flex;
+    justify-content: space-between; /* Pushes title left, button right */
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 12px;
+}
+
+.delete-project-btn {
+    background: none;
+    border: 1px solid #944a4a; /* Muted crimson border */
+    color: #944a4a;
+    padding: 6px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 14px;
+    transition: all 0.2s ease-in-out;
+}
+
+.delete-project-btn:hover {
+    background-color: #944a4a;
+    color: white;
+    box-shadow: 0 2px 10px rgba(148, 74, 74, 0.2);
+}
+
+
 /* mobile view media querys  */

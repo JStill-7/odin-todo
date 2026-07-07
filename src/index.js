@@ -17,8 +17,8 @@ projectsMasterList.push(generalProject);
 // Activate your modal popup buttons
 setupModalListeners();
 
-// Force the main page container to immediately display the General project
-renderActiveProject(generalProject);
+// Pass projectsMasterList so the engine can manage deletions
+renderActiveProject(generalProject, projectsMasterList);
 
 // Populate the task form dropdown list with our projects array (currently just holds General)
 updateProjectDropdown(projectsMasterList);
@@ -62,7 +62,6 @@ const todoModalElement = document.getElementById('todo-modal');
 newTaskForm.addEventListener('submit', (e) => {
     e.preventDefault(); // Stop page reload
 
-    
     const formData = new FormData(newTaskForm);
     
     const title = formData.get('title');
@@ -81,8 +80,8 @@ newTaskForm.addEventListener('submit', (e) => {
         //Add the task data to that project's internal array
         targetProject.addTodo(createdTodo);
 
-        //Instantly refresh the viewport to show the newly added task!
-        renderActiveProject(targetProject);
+        // 👉 UPDATED: Instantly refresh the viewport to show the newly added task!
+        renderActiveProject(targetProject, projectsMasterList);
     }
 
     //Cleanup form and hide the popup modal
@@ -101,7 +100,6 @@ showAllTasks.addEventListener('click', (e) => {
 });
 
 
-
 const showCompletedTasks = document.getElementById('completed-tasks');
 
 showCompletedTasks.addEventListener('click', () => {
@@ -117,12 +115,68 @@ closeTaskModalBtn.addEventListener('click', () => {
 });
 
 
-
 const closeProjectModalBtn = document.querySelector('#new-project-modal .close-modal-btn');
 const newProjectModal = document.getElementById('new-project-modal');
 
 closeProjectModalBtn.addEventListener('click', () => {
     newProjectModal.classList.add('hidden'); 
+});
+
+// --- CENTRALIZED BODY CLICK MANAGER (Projects & Tasks) ---
+const bodyContainer = document.getElementById('body-container');
+
+bodyContainer.addEventListener('click', (e) => {
+    
+    //  HANDLE: DELETE PROJECT
+    if (e.target.classList.contains('delete-project-btn')) {
+        const projectName = e.target.getAttribute('data-project');
+
+        if (projectName === 'General') {
+            alert("The 'General' project cannot be deleted!");
+            return;
+        }
+
+        if (confirm(`Are you sure you want to delete "${projectName}" and all its tasks?`)) {
+            const index = projectsMasterList.findIndex(proj => proj.name === projectName);
+            if (index > -1) {
+                projectsMasterList.splice(index, 1);
+            }
+            renderProjectsSidebar(projectsMasterList);
+            updateProjectDropdown(projectsMasterList);
+            renderActiveProject(generalProject);
+        }
+    }
+
+    //  HANDLE: COMPLETE TASK
+    if (e.target.classList.contains('complete-btn')) {
+        const projectName = e.target.getAttribute('data-project');
+        const taskTitle = e.target.getAttribute('data-title');
+
+        // Find the project, then find the task inside it, and flip completed to true
+        const targetProject = projectsMasterList.find(proj => proj.name === projectName);
+        if (targetProject) {
+            const targetTodo = targetProject.todos.find(todo => todo.title === taskTitle);
+            if (targetTodo) {
+                targetTodo.completed = true; 
+                renderActiveProject(targetProject); // Instantly re-render workspace
+            }
+        }
+    }
+
+    // HANDLE: DELETE TASK
+    if (e.target.classList.contains('delete-btn')) {
+        const projectName = e.target.getAttribute('data-project');
+        const taskTitle = e.target.getAttribute('data-title');
+
+        const targetProject = projectsMasterList.find(proj => proj.name === projectName);
+        if (targetProject) {
+            const todoIndex = targetProject.todos.findIndex(todo => todo.title === taskTitle);
+            if (todoIndex > -1) {
+                targetProject.todos.splice(todoIndex, 1); // Remove task from array
+                renderActiveProject(targetProject);       // Instantly re-render workspace
+            }
+        }
+    }
 });
 
 
