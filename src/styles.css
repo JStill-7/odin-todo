@@ -24,11 +24,11 @@
 body {
     background-color: var(--bg-main);
     color: var(--text-main);
-    /* 👇 CHOSEN OPTION: Lora for ultra-readable, elegant body text */
+    /* Lora for ultra-readable, elegant body text */
     font-family: 'Lora', Georgia, serif; 
 }
 
-/* 👇 NEW: EB Garamond for all editorial headers and titles */
+/* EB Garamond for all editorial headers and titles */
 h1, h2, h3, #top-bar, #projects-bar h1 {
     font-family: 'EB Garamond', Garamond, serif;
     font-weight: 600;
@@ -320,8 +320,6 @@ h1, h2, h3, #top-bar, #projects-bar h1 {
     margin-top: 5px;
     padding: 5px;
     transition: color 0.2s ease;
-    
-    /* 💡 THESE TWO LINES FIX THE "GIANT BLOCK" ISSUE: */
     align-self: center;   /* Stops the button from stretching full-width */
     width: max-content;   /* Shrinks the clickable area to just fit the word "Cancel" */
 }
@@ -364,3 +362,53 @@ h1, h2, h3, #top-bar, #projects-bar h1 {
 
 
 /* mobile view media querys  */
+/* kick in around 790px */
+/* Hide the checkbox and menu icon on desktop */
+/* --- MOBILE MENU NAVIGATION --- */
+.menu-icon { display: none; } /* Hide on desktop */
+
+@media screen and (max-width: 790px) {
+  #top-bar {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+  }
+
+  /* Show and style the hamburger button cleanly */
+  .menu-icon {
+    display: block;
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s ease;
+  }
+  
+  .menu-icon:hover {
+    color: var(--accent-hover); 
+  }
+  
+  #left-bar {
+    display: none; /* Hide sidebar by default on small screens */
+    width: 100%;
+    position: absolute;
+    top: 60px; /* Sit right below your top bar header height */
+    left: 0;
+    background-color: var(--bg-sidebar); /* Matches your beautiful academia theme background */
+    z-index: 9999; /* Places it squarely on top of other content layers */
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  } 
+
+  /* 💡 The magic class toggled by JS to show the drawer */
+  #left-bar.active {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+}

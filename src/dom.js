@@ -81,6 +81,7 @@ export function renderActiveProject(project) {
                 </div>
                 <div class="card-actions">
                     <button class="complete-btn" data-project="${project.name}" data-title="${todo.title}">Complete Task</button>
+                    <button class="edit-btn" data-project="${project.name}" data-title="${todo.title}">Edit Task</button>
                     <button class="delete-btn" data-project="${project.name}" data-title="${todo.title}">Delete Task</button>
                 </div>
             `;

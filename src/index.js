@@ -63,28 +63,66 @@ newTaskForm.addEventListener('submit', (e) => {
     e.preventDefault(); // Stop page reload
 
     const formData = new FormData(newTaskForm);
-    
     const title = formData.get('title');
     const description = formData.get('description');
     const dueDate = formData.get('dueDate');
     const priority = formData.get('priority');
     const chosenProjectName = formData.get('projectGroup');
 
-    //Create the new Todo instance object
-    const createdTodo = new Todo(title, description, dueDate, priority);
+    // 💡 CHECK: Are we editing an existing task, or creating a new one?
+    if (newTaskForm.dataset.editMode === "true") {
+        const origProjectName = newTaskForm.dataset.originalProject;
+        const origTitle = newTaskForm.dataset.originalTitle;
 
-    //Find the matching project object inside our master list array
-    const targetProject = projectsMasterList.find(proj => proj.name === chosenProjectName);
+        const origProject = projectsMasterList.find(proj => proj.name === origProjectName);
+        const targetTodo = origProject ? origProject.todos.find(todo => todo.title === origTitle) : null;
 
-    if (targetProject) {
-        //Add the task data to that project's internal array
-        targetProject.addTodo(createdTodo);
+        if (targetTodo) {
+            // If the user changed the project group, migrate the task over
+            if (origProjectName !== chosenProjectName) {
+                const idx = origProject.todos.indexOf(targetTodo);
+                if (idx > -1) origProject.todos.splice(idx, 1); // Remove from old project
 
-        // 👉 UPDATED: Instantly refresh the viewport to show the newly added task!
-        renderActiveProject(targetProject, projectsMasterList);
+                // Update properties
+                targetTodo.title = title;
+                targetTodo.description = description;
+                targetTodo.dueDate = dueDate;
+                targetTodo.priority = priority;
+
+                // Push into the new project array
+                const newProject = projectsMasterList.find(proj => proj.name === chosenProjectName);
+                if (newProject) newProject.addTodo(targetTodo);
+            } else {
+                // Otherwise, just update the data values in place
+                targetTodo.title = title;
+                targetTodo.description = description;
+                targetTodo.dueDate = dueDate;
+                targetTodo.priority = priority;
+            }
+        }
+
+        // Clean up the metadata flags and reset the submit button text
+        delete newTaskForm.dataset.editMode;
+        delete newTaskForm.dataset.originalProject;
+        delete newTaskForm.dataset.originalTitle;
+        document.getElementById('submit-btn').value = "Submit";
+
+        // Refresh the interface based on the project the task lands in
+        const projectToRender = projectsMasterList.find(proj => proj.name === chosenProjectName);
+        renderActiveProject(projectToRender);
+
+    } else {
+        // 💡 DEFAULT LOGIC: Create a brand new Todo instance
+        const createdTodo = new Todo(title, description, dueDate, priority);
+        const targetProject = projectsMasterList.find(proj => proj.name === chosenProjectName);
+
+        if (targetProject) {
+            targetProject.addTodo(createdTodo);
+            renderActiveProject(targetProject);
+        }
     }
 
-    //Cleanup form and hide the popup modal
+    // Cleanup form layout and hide the popup modal
     newTaskForm.reset();
     todoModalElement.classList.add('hidden');
 });
@@ -176,6 +214,56 @@ bodyContainer.addEventListener('click', (e) => {
                 renderActiveProject(targetProject);       // Instantly re-render workspace
             }
         }
+    }
+
+// HANDLE: EDIT TASK
+    if (e.target.classList.contains('edit-btn')) {
+        const projectName = e.target.getAttribute('data-project');
+        const taskTitle = e.target.getAttribute('data-title');
+
+        const targetProject = projectsMasterList.find(proj => proj.name === projectName);
+        
+        if (targetProject) {
+            // Find the specific task object we want to edit
+            const targetTodo = targetProject.todos.find(todo => todo.title === taskTitle);
+            
+            if (targetTodo) {
+                //Fill the form input fields with the task's existing information
+                document.getElementById('task-name').value = targetTodo.title;
+                document.getElementById('task-description').value = targetTodo.description;
+                document.getElementById('due-date').value = targetTodo.dueDate;
+                document.getElementById('task-priority').value = targetTodo.priority;
+                document.getElementById('task-project').value = projectName;
+
+                //Add hidden metadata to the form so the submit listener knows we are EDITING
+                newTaskForm.dataset.editMode = "true";
+                newTaskForm.dataset.originalProject = projectName;
+                newTaskForm.dataset.originalTitle = taskTitle;
+
+                //Change button text to feel polished
+                document.getElementById('submit-btn').value = "Save Changes";
+
+                //Open the modal pop-up
+                todoModalElement.classList.remove('hidden');
+            }
+        }
+    }
+});
+
+
+// --- MOBILE SIDEBAR DROPDOWN LOGIC ---
+const menuToggleBtn = document.getElementById('menu-toggle-btn');
+const leftBar = document.getElementById('left-bar');
+
+// Toggle the mobile drop down when clicking the hamburger icon
+menuToggleBtn.addEventListener('click', () => {
+    leftBar.classList.toggle('active');
+});
+
+// Auto-close the drawer when selecting a layout option or project
+leftBar.addEventListener('click', () => {
+    if (window.innerWidth <= 790) {
+        leftBar.classList.remove('active'); // Instantly hides the menu after choice is made
     }
 });
 
